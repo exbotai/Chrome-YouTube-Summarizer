@@ -1,0 +1,22 @@
+{
+  "name": "exbot-browser-ext",
+  "version": "0.1.0",
+  "description": "exbot-browser-ext",
+  "main": "popup.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint popup.js --fix",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "git archive -o prevyou.zip HEAD"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Stepjet/exbot-browser-ext.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {},
+  "homepage": "https://gitlab.com/Stepjet/exbot-browser-ext#readme",
+  "devDependencies": {
+    "eslint": "^7.23.0"
+  }
+}

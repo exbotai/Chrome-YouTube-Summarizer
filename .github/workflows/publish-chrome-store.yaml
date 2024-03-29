@@ -1,0 +1,60 @@
+name: Chrome Store Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-extension:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    # - name: Increment version
+    #   run: |
+    #     const fs = require('fs');
+    #     let manifest = JSON.parse(fs.readFileSync('manifest.json', 'utf8'));
+    #     let versionParts = manifest.version.split('.').map(part => parseInt(part, 10));
+        
+    #     versionParts[1] += 1;
+    #     if (versionParts[1] > 9) {
+    #       versionParts[0] += 1;
+    #       versionParts[1] = 0;
+    #     }
+        
+    #     manifest.version = versionParts.join('.');
+    #     fs.writeFileSync('manifest.json', JSON.stringify(manifest, null, 2));
+    #   shell: node
+
+    - name: Increment extension version
+      run: |
+        node -e "
+        const fs = require('fs');
+        const path = 'manifest.json';
+        const semver = require('semver');
+        let manifest = JSON.parse(fs.readFileSync(path, 'utf8'));
+        let version = semver.inc(manifest.version, 'minor');
+        manifest.version = version;
+        fs.writeFileSync(path, JSON.stringify(manifest, null, 2));
+        "
+
+    - name: Build extension
+      run: zip -r release.zip ./*
+
+    - name: Upload to Chrome Web Store
+      uses: notlmn/chrome-webstore-upload@v1
+      with:
+        clientId: ${{ secrets.CLIENT_ID }}
+        clientSecret: ${{ secrets.CLIENT_SECRET }}
+        refreshToken: ${{ secrets.REFRESH_TOKEN }}
+        extensionId: ${{ secrets.EXTENSION_ID }}
+        zipFile: 'release.zip'

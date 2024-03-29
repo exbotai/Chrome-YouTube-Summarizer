@@ -111,27 +111,6 @@ body {
 }
 
 
-.py-dice {
-    font-size: 32px;
-    position: absolute;
-    right: 0;
-    transform: translateX(100%);
-    padding: 0 10px;
-    transition: transform 600ms ease-out;
-}
-
-.py-dice:hover div {
-    animation: diceShaking 150ms infinite alternate linear;
-}
-
-.py-button:hover .py-dice {
-    transform: translate(50%);
-}
-
-.py-dice:hover {
-    transform: translateX(0%) !important;
-}
-
 .py-button-icon {
     margin-right: 12px;
 }
@@ -148,9 +127,48 @@ body {
     cursor: pointer;
 }
 
+.summary-task.row .py-secondary-button {
+    margin: auto 2px;
+    height: auto;
+    width: auto;
+}
+
+.py-summary-failed-task-url {
+    font-size: 14px;
+    color: var(--headerColor);
+}
+
+
 .py-secondary-button:hover {
     background-color: var(--btnBg);
 }
+
+.py-summary-task-description {
+    max-width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0px 0px auto 5px;
+}
+
+.py-summary-task-title {
+    font-weight: 600;
+    color: var(--headerColor);
+}
+
+.py-summary-task-subtitle {
+    font-size: 12px;
+    color: var(--grey);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+}
+
+.py-summary-task-subtitle a {
+    color: var(--headerColor);
+}
+
+
 
 .summary-task.row .py-secondary-button {
 }
@@ -219,8 +237,9 @@ body {
 }
 
 .py-tasks>.row {
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
+
 
 .py-summary-task-id {
     font-size: 14px;
@@ -230,6 +249,17 @@ body {
     font-family: monospace;
     max-width: 260px;
 }
+
+
+.py-summary-task-thumbnail {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0px 0px auto 0px;
+    border-radius: 4px;
+}
+
 
 .py-summary-task-id a {
     font-size: 11px;
@@ -539,7 +569,6 @@ input:checked + .slider {background-color: var(--btnColor);}
 input:focus + .slider {box-shadow: 0 0 1px var(--btnColor);}
 input:checked + .slider:before {transform: translateX(16px);}
 
-/* //////// */
 
 .row {
     display: flex;
@@ -549,7 +578,7 @@ input:checked + .slider:before {transform: translateX(16px);}
 
 .row.summary-task {
     justify-content: space-between;
-    padding: 0 10px 0 20px;
+    padding: 2px 5px;
 }
 
 .row .py-form-group {

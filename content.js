@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 });
 
-const SUMMARY_CHECK_URL = "https://exbot.ai/api/v1/products/langing/youtube_summary_check";
+const SUMMARY_CHECK_URL = "https://api.app.exbot.ai/v1/products/youtube_summary/landing/youtube_summary_check/";
 
 // Event send by the inner `<object>` script
 // window.addEventListener('message', e => {
@@ -86,10 +86,11 @@ function addSummaryButton() {
             );
             button.onclick = handleSummarizeButtonClick;
             button.innerHTML += `
-                <svg width="64px" height="64px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="
+                <svg width="64px" height="64px" id="summaryReady" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="
                     position: absolute;
                     top: -29px;
                     right: -26px;
+                    display: none;
                 "><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="2" fill="#00d103"></circle> </g></svg>
             `
             targetElement.appendChild(button);
@@ -119,8 +120,11 @@ function checkVideoUrl(videoUrl) {
     fetch(checkUrl)
         .then(response => response.json())
         .then(data => {
+            console.log('res', data)
             if (data.success === "true") {
                 console.log(data.url)
+                //show #summaryReady
+                document.getElementById('summaryReady').style.display = 'block';
             }
         })
         .catch(error => console.error('Check summary error:', error));
@@ -128,6 +132,12 @@ function checkVideoUrl(videoUrl) {
 
 function observeVideoChanges() {
     let lastUrl = location.href;
+
+    // Initial page loading check
+    if (lastUrl.includes("/watch")) {
+        checkVideoUrl(lastUrl);
+    }
+
     new MutationObserver(() => {
         const currentUrl = location.href;
         if (currentUrl !== lastUrl) {

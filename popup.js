@@ -187,7 +187,7 @@ function createTaskElement(task) {
                             </div>`;
         }
 
-        if (false && task.link) {
+        if (task.link) {
             contentHTML += `<div class="py-secondary-button">
                     <a href="${task.link}" target="_blank" title="Link">
                         <svg class="py-summary-link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#A7A3C2"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><defs><style>.cls-1{fill:none;stroke:#A7A3C2;stroke-miterlimit:10;stroke-width:1.92px;}</style></defs><path class="cls-1" d="M10.56,5.77l2.72-2.72a5.43,5.43,0,0,1,3.84-1.59,5.43,5.43,0,0,1,5.42,5.42A5.43,5.43,0,0,1,21,10.72l-2.72,2.72"></path><path class="cls-1" d="M5.77,10.56,3.05,13.28A5.42,5.42,0,1,0,10.72,21l2.72-2.72"></path><line class="cls-1" x1="16.79" y1="7.21" x2="7.21" y2="16.79"></line><line class="cls-1" x1="20.63" y1="15.83" x2="23.5" y2="15.83"></line><line class="cls-1" x1="15.83" y1="20.63" x2="15.83" y2="23.5"></line><line class="cls-1" x1="19.19" y1="19.19" x2="21.1" y2="21.1"></line><line class="cls-1" x1="3.38" y1="8.17" x2="0.5" y2="8.17"></line><line class="cls-1" x1="8.17" y1="3.38" x2="8.17" y2="0.5"></line><line class="cls-1" x1="4.81" y1="4.81" x2="2.9" y2="2.9"></line></g></svg>
@@ -263,12 +263,13 @@ function renderTasks() {
     }
 }
 
-function processSummaryResult(result) {
+function processSummaryResult(result, status) {
     const id = result._id;
     const tasks = getTasksStorage();
     tasks.forEach(task => {
         if (task.task_id === id) {
-            task.status = result.status;
+            task.status = status;
+
             if (result.link) {
                 task.link = result.link;
             }
@@ -311,7 +312,7 @@ function checkSummaryStatus(task_id) {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success' || data.status === 'failure') {
-                    processSummaryResult(data.task);
+                    processSummaryResult(data.task, data.status);
                 }
             })
             .then(() => {
